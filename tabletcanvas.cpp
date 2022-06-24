@@ -63,7 +63,6 @@ void TabletCanvas::tabletEvent(QTabletEvent *event) {
             lastPoint.pressure = event->pressure();
             lastPoint.rotation = event->rotation();
         }
-        qDebug() << "Started line " << m_line_index;
         break;
     case QEvent::TabletMove:
 #ifndef Q_OS_IOS
@@ -124,7 +123,6 @@ void TabletCanvas::paintPixmap(QPainter &painter, QTabletEvent *event) {
 
     switch (event->deviceType()) {
     case QInputDevice::DeviceType::Airbrush: {
-        qDebug() << "Airbrush";
         painter.setPen(Qt::NoPen);
         QRadialGradient grad(lastPoint.pos, m_pen.widthF() * 10.0);
         QColor color = m_brush.color();
@@ -157,7 +155,6 @@ void TabletCanvas::paintPixmap(QPainter &painter, QTabletEvent *event) {
     }
         Q_FALLTHROUGH();
     case QInputDevice::DeviceType::Stylus:
-        qDebug() << "Stylus";
         if (event->pointingDevice()->capabilities().testFlag(QPointingDevice::Capability::Rotation)) {
             m_brush.setStyle(Qt::SolidPattern);
             painter.setPen(Qt::NoPen);
