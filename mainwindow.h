@@ -6,13 +6,13 @@
 class TabletCanvas;
 
 class MainWindow : public QMainWindow {
-  Q_OBJECT
+    Q_OBJECT
 
-public:
-  MainWindow(TabletCanvas *canvas);
-  ~MainWindow();
+  public:
+    MainWindow(TabletCanvas *canvas);
+    ~MainWindow();
 
-private:
-  TabletCanvas *m_canvas;
+  private:
+    TabletCanvas *m_canvas;
 };
 #endif // MAINWINDOW_H
