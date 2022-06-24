@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPen>
+#include <cstdint>
 
 class TabletCanvas : public QWidget
 {
@@ -52,6 +53,8 @@ private:
     QBrush m_brush;
     QPen m_pen;
     bool m_deviceDown = false;
+
+    uint64_t m_line_index = 0;
 
     struct Point {
         QPointF pos;

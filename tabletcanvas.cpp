@@ -2,6 +2,7 @@
 
 #include <QTabletEvent>
 #include <QPainter>
+#include <QtDebug>
 #include <QCoreApplication>
 
 TabletCanvas::TabletCanvas()
@@ -17,6 +18,7 @@ TabletCanvas::TabletCanvas()
 void TabletCanvas::updateCursor(const QTabletEvent *event) {
     QCursor cursor;
     if (event->type() != QEvent::TabletLeaveProximity) {
+
         if (event->pointerType() == QPointingDevice::PointerType::Eraser) {
             cursor = QCursor(QPixmap(":/images/cursor-eraser.png"), 3, 28);
         } else {
@@ -63,6 +65,7 @@ void TabletCanvas::tabletEvent(QTabletEvent *event) {
             lastPoint.pressure= event->pressure();
             lastPoint.rotation = event->rotation();
         }
+        qDebug() << "Started line " << m_line_index;
         break;
     case QEvent::TabletMove:
 #ifndef Q_OS_IOS
@@ -84,6 +87,9 @@ void TabletCanvas::tabletEvent(QTabletEvent *event) {
             m_deviceDown = false;
         }
         update();
+
+        // the pen has been removed, so add one to the line index
+        m_line_index++;
         break;
     default:
         break;
