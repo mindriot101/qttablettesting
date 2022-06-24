@@ -4,6 +4,7 @@
 #include <QPen>
 #include <QWidget>
 #include <cstdint>
+#include <qtransform.h>
 
 class TabletCanvas : public QWidget {
     Q_OBJECT
@@ -52,6 +53,8 @@ class TabletCanvas : public QWidget {
     uint64_t m_line_index = 0;
 
     QVector<QVector<QPointF>> m_history;
+
+    QTransform m_transform;
 
     struct Point {
         QPointF pos;

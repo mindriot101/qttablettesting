@@ -26,25 +26,34 @@ void TabletCanvas::updateCursor(const QTabletEvent *event) {
 void TabletCanvas::tabletEvent(QTabletEvent *event) {
     switch (event->type()) {
     case QEvent::TabletPress:
-        if (event->button() != Qt::MouseButton::LeftButton) {
-            return;
-        }
-
-        if (!m_deviceDown) {
-            m_deviceDown = true;
-            lastPoint.pos = event->position();
-            lastPoint.pressure = event->pressure();
-            lastPoint.rotation = event->rotation();
+        switch (event->button()) {
+        case Qt::MouseButton::LeftButton:
+            if (!m_deviceDown) {
+                m_deviceDown = true;
+                lastPoint.pos = event->position();
+                lastPoint.pressure = event->pressure();
+                lastPoint.rotation = event->rotation();
+            }
+            break;
+        default:
+            break;
         }
         break;
     case QEvent::TabletMove:
         if (m_deviceDown) {
+            qDebug() << "Device down";
             updateBrush(event);
             QPainter painter(&m_pixmap);
+            /* painter.setTransform(m_transform); */
             paintPixmap(painter, event);
             lastPoint.pos = event->position();
             lastPoint.pressure = event->pressure();
             lastPoint.rotation = event->rotation();
+        } else {
+            if (event->buttons() & Qt::MouseButton::MiddleButton) {
+                QTransform transform = m_transform.translate(0.1, 0.1);
+                m_transform = transform;
+            }
         }
         break;
 
@@ -80,6 +89,7 @@ void TabletCanvas::paintEvent(QPaintEvent *event) {
     if (m_pixmap.isNull())
         initPixmap();
     QPainter painter(this);
+    /* painter.setTransform(m_transform); */
     QRect pixmapPortion =
         QRect(event->rect().topLeft() * devicePixelRatio(), event->rect().size() * devicePixelRatio());
     painter.drawPixmap(event->rect().topLeft(), m_pixmap, pixmapPortion);
