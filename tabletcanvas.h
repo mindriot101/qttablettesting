@@ -23,9 +23,6 @@ class TabletCanvas : public QWidget {
     bool saveImage(const QString &file);
     bool loadImage(const QString &file);
     void clear();
-    void setAlphaChannelValuator(Valuator type) { m_alphaChannelValuator = type; }
-    void setColorSaturationValuator(Valuator type) { m_colorSaturationValuator = type; }
-    void setLineWidthType(Valuator type) { m_lineWidthValuator = type; }
     void setColor(const QColor &c) {
         if (c.isValid())
             m_color = c;
@@ -46,9 +43,6 @@ class TabletCanvas : public QWidget {
     void updateBrush(const QTabletEvent *event);
     void updateCursor(const QTabletEvent *event);
 
-    Valuator m_alphaChannelValuator = TangentialPressureValuator;
-    Valuator m_colorSaturationValuator = NoValuator;
-    Valuator m_lineWidthValuator = PressureValuator;
     QColor m_color = Qt::red;
     QPixmap m_pixmap;
     QBrush m_brush;
@@ -56,6 +50,8 @@ class TabletCanvas : public QWidget {
     bool m_deviceDown = false;
 
     uint64_t m_line_index = 0;
+
+    QVector<QVector<QPointF>> m_history;
 
     struct Point {
         QPointF pos;
